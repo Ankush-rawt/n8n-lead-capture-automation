@@ -1,38 +1,41 @@
 {
-  "name": "proper 1st project",
+  "name": "lead capture automation",
   "nodes": [
     {
       "parameters": {
-        "formTitle": "wanna buy ",
-        "formDescription": "buy my Product ",
+        "formTitle": "Business Inquiry Form",
+        "formDescription": "ProductTell us about your interest and we'll get back to you shortly.",
         "formFields": {
           "values": [
             {
-              "fieldLabel": "name ",
-              "placeholder": "enter name"
+              "fieldLabel": "Name ",
+              "placeholder": "Enter your name...."
             },
             {
               "fieldLabel": "Email",
               "fieldType": "email",
-              "placeholder": "Enter your email"
+              "placeholder": "Enter your email.."
             },
             {
-              "fieldLabel": "product ",
+              "fieldLabel": "Service Interested In",
               "fieldType": "dropdown",
               "fieldOptions": {
                 "values": [
                   {
-                    "option": "suppliment"
+                    "option": "Consulting"
                   },
                   {
-                    "option": "drugs"
+                    "option": "Automation Setup"
+                  },
+                  {
+                    "option": "Support Package"
                   }
                 ]
               }
             },
             {
-              "fieldLabel": "Really wanna buy it ",
-              "fieldType": "checkbox",
+              "fieldLabel": "Would you like us to reach out?",
+              "fieldType": "radio",
               "fieldOptions": {
                 "values": [
                   {
@@ -48,7 +51,7 @@
         },
         "options": {
           "appendAttribution": false,
-          "buttonLabel": "jama"
+          "buttonLabel": "SUBMIT"
         }
       },
       "type": "n8n-nodes-base.formTrigger",
@@ -79,9 +82,9 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "NAME": "={{ $json[\"name \"] }}",
-            "PRODUCT": "={{ $json[\"product \"] }}",
-            "WILL": "={{ $json[\"Really wanna buy it \"] }}",
+            "NAME": "={{ $json[\"Name \"] }}",
+            "PRODUCT": "={{ $json[\"Service Interested In\"] }}",
+            "WILL": "={{ $json[\"Would you like us to reach out?\"] }}",
             "TIME": "={{ $json.submittedAt }}",
             "EMAIL": "={{ $json.Email }}"
           },
@@ -165,7 +168,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        672,
+        736,
         -16
       ],
       "id": "cf847fe9-511a-4971-9174-7ca98e3c09f5",
@@ -190,12 +193,11 @@
           "conditions": [
             {
               "id": "84c02045-5e89-4f6d-844b-0864592ea553",
-              "leftValue": "={{ $('On form submission').item.json[\"Really wanna buy it \"] }}",
+              "leftValue": "={{ $json.WILL }}",
               "rightValue": "Yes",
               "operator": {
-                "type": "array",
-                "operation": "contains",
-                "rightType": "any"
+                "type": "string",
+                "operation": "equals"
               }
             }
           ],
@@ -206,8 +208,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        464,
-        64
+        448,
+        0
       ],
       "id": "db133b29-8543-484a-a20d-17bfbc913c58",
       "name": "If"
@@ -254,7 +256,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "92c9763e-ec6f-426c-bc1e-853716ab9d45",
+  "versionId": "69f78e04-3664-45ea-bd01-f660b8574219",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "08a8b7974c9eb338eac68a158b5e89994d2a02050d7e209f4e3abd13fa8c035e"
