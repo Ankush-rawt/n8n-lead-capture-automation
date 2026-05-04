@@ -59,13 +59,6 @@ IF (interested = "yes")
 
 ---
 
-## 📂 Files
-
-- `workflow.json` — n8n workflow export (import directly into n8n)
-- `screenshot.png` — Workflow canvas preview
-
----
-
 ## 👤 Author
 
 **Ankush** — Automation Developer  
