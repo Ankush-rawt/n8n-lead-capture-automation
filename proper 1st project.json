@@ -1,0 +1,264 @@
+{
+  "name": "proper 1st project",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "wanna buy ",
+        "formDescription": "buy my Product ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "name ",
+              "placeholder": "enter name"
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "Enter your email"
+            },
+            {
+              "fieldLabel": "product ",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "suppliment"
+                  },
+                  {
+                    "option": "drugs"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Really wanna buy it ",
+              "fieldType": "checkbox",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Yes "
+                  },
+                  {
+                    "option": "No"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "jama"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8ae5c03c-da14-455a-8213-d6e21d4abb1d",
+      "name": "On form submission",
+      "webhookId": "51d6e2ab-3323-46d5-b0df-5cd263237853"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1dCf6JTkg1Ob6ZMA05LpaMe2XlVu6dUsiLYwJn4WohKU",
+          "mode": "list",
+          "cachedResultName": "Proper",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1dCf6JTkg1Ob6ZMA05LpaMe2XlVu6dUsiLYwJn4WohKU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NAME": "={{ $json[\"name \"] }}",
+            "PRODUCT": "={{ $json[\"product \"] }}",
+            "WILL": "={{ $json[\"Really wanna buy it \"] }}",
+            "TIME": "={{ $json.submittedAt }}",
+            "EMAIL": "={{ $json.Email }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "NAME",
+              "displayName": "NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PRODUCT",
+              "displayName": "PRODUCT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "WILL",
+              "displayName": "WILL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EMAIL",
+              "displayName": "EMAIL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TIME",
+              "displayName": "TIME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "dfa48dee-45f0-4f6f-a647-6db327004fc0",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "4G8rHIGImSg5EA4a",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.EMAIL }}",
+        "subject": "hey coustomer",
+        "emailType": "text",
+        "message": "thanks for purchasing my product dont forget to leavea  a review ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        -16
+      ],
+      "id": "cf847fe9-511a-4971-9174-7ca98e3c09f5",
+      "name": "Send a message",
+      "webhookId": "801ed001-07f0-42cc-be3f-2143ff07f9e7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "wRtVhS2yelSdhlLO",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "84c02045-5e89-4f6d-844b-0864592ea553",
+              "leftValue": "={{ $('On form submission').item.json[\"Really wanna buy it \"] }}",
+              "rightValue": "Yes",
+              "operator": {
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        464,
+        64
+      ],
+      "id": "db133b29-8543-484a-a20d-17bfbc913c58",
+      "name": "If"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "92c9763e-ec6f-426c-bc1e-853716ab9d45",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "08a8b7974c9eb338eac68a158b5e89994d2a02050d7e209f4e3abd13fa8c035e"
+  },
+  "id": "a3FukrDsCrQ73HoS",
+  "tags": []
+}
